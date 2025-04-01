@@ -7,3 +7,8 @@ snippet forv "for range with value"
 	for _, ${1:v} := range ${2:iterable} {
 		${3:// do something with v}
 	}
+
+snippet fprov "fx provide function"
+	fx.Provide(func() ${1:Package}.${2:Interface} {
+		return &${1}.${3}{}
+	}),

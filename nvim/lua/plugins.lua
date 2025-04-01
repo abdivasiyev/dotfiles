@@ -101,4 +101,9 @@ return require('packer').startup(function(use)
 	}
 
 	use 'rhysd/git-messenger.vim'
+
+	use {
+		'nvim-lualine/lualine.nvim',
+		dependencies = { 'nvim-tree/nvim-web-devicons' }
+	}
 end)
