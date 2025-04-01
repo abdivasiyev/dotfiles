@@ -1,12 +1,16 @@
 [window]
 
-startup_mode = "Fullscreen"
+startup_mode = "Windowed"
 
 padding.x = 0
 padding.y = 0
 
-decorations = "Buttonless"
+decorations = "Transparent"
 decorations_theme_variant = "Dark"
+
+opacity = 0.8
+
+option_as_alt = "Both"
 
 [font]
 normal.family = "FiraCode Nerd Font"
@@ -15,36 +19,39 @@ italic.family = "FiraCode Nerd Font"
 bold_italic.family = "FiraCode Nerd Font"
 size = 16.0
 
-# From iTerm2 Pastel Dark theme
+# cyberdream theme for alacritty
+[[colors.indexed_colors]]
+color = "0xffbd5e"
+index = 16
 
-# Default colors
-[colors.primary]
-background = '#000000'
-foreground = '#C7C7C7'
+[[colors.indexed_colors]]
+color = "0xff6e5e"
+index = 17
 
-# Cursor colors
-[colors.cursor]
-text    = '#FFFEFF'
-cursor  = '#FFB472'
-
-# Normal colors
-[colors.normal]
-black    = '#616161'
-red      = '#FF8272'
-green    = '#B4FA72'
-yellow   = '#FEFDC2'
-blue     = '#A5D5FE'
-magenta  = '#FF8FFD'
-cyan     = '#D0D1FE'
-white    = '#F1F1F1'
-
-# Bright colors
 [colors.bright]
-black    = '#8E8E8E'
-red      = '#FFC4BD'
-green    = '#D6FCB9'
-yellow   = '#FEFDD5'
-blue     = '#C1E3FE'
-magenta  = '#FFB1FE'
-cyan     = '#E5E6FE'
-white    = '#FFFEFF'
+black = "0x3c4048"
+blue = "0x5ea1ff"
+cyan = "0x5ef1ff"
+green = "0x5eff6c"
+magenta = "0xbd5eff"
+red = "0xff6e5e"
+white = "0xffffff"
+yellow = "0xf1ff5e"
+
+[colors.normal]
+black = "0x16181a"
+blue = "0x5ea1ff"
+cyan = "0x5ef1ff"
+green = "0x5eff6c"
+magenta = "0xbd5eff"
+red = "0xff6e5e"
+white = "0xffffff"
+yellow = "0xf1ff5e"
+
+[colors.primary]
+background = "0x16181a"
+foreground = "0xffffff"
+
+[colors.selection]
+background = "0x3c4048"
+foreground = "0xffffff"
