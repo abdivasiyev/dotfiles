@@ -15,6 +15,7 @@ lsp_zero.format_on_save({
 		['rust_analyzer'] = { 'rust' },
 		['jsonnet_ls'] = { 'jsonnet' },
 		['intelephense'] = { 'php' },
+		['yamlls'] = { 'yaml' },
 	},
 })
 

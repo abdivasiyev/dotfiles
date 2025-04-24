@@ -40,7 +40,7 @@ return require('packer').startup(function(use)
 		}
 	}
 	use 'mbbill/undotree'
-	use 'github/copilot.vim'
+	-- use 'github/copilot.vim'
 	use 'lewis6991/gitsigns.nvim'
 	use 'mg979/vim-visual-multi'
 	use 'wakatime/vim-wakatime'
@@ -57,6 +57,7 @@ return require('packer').startup(function(use)
 
 	use "rebelot/kanagawa.nvim"
 	use { "scottmckendry/cyberdream.nvim" }
+	use { "ellisonleao/gruvbox.nvim" }
 
 	use {
 		'gelguy/wilder.nvim',
