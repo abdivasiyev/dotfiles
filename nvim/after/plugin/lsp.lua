@@ -16,6 +16,7 @@ lsp_zero.format_on_save({
 		['jsonnet_ls'] = { 'jsonnet' },
 		['intelephense'] = { 'php' },
 		['yamlls'] = { 'yaml' },
+		['hls'] = { 'haskell' },
 	},
 })
 
