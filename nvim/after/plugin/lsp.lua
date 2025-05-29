@@ -41,7 +41,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 	pattern = "*",
 	callback = function()
 		local is_code_action_supportable = false
-		for _, client in ipairs(vim.lsp.buf_get_clients()) do
+		for _, client in ipairs(vim.lsp.get_clients()) do
 			if client.supports_method("textDocument/codeAction") then
 				is_code_action_supportable = true
 				break

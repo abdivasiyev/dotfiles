@@ -12,3 +12,25 @@ snippet fprov "fx provide function"
 	fx.Provide(func() ${1:Package}.${2:Interface} {
 		return &${1}.${3}{}
 	}),
+
+snippet fbson "add bson field to struct"
+	${1:Field} ${2:Type} \`bson:"${3:field}"\`
+
+snippet sfield "add field to struct with struct tag"
+	${1:Field} ${2:string} \`${4:json}:"${3:field}"\`
+
+snippet tag "add struct tag to existing field"
+	\`${2:json}:"${1:field}"\`
+
+snippet testt "table driven tests"
+	func Test_${1:Function}(t *testing.T) {
+		testCases := []struct {
+			name string
+		}{}
+
+		for _, tc := range testCases {
+			t.Run(tc.name, func(t *testing.T) {
+				${0:test body}
+			})
+		}
+	}
