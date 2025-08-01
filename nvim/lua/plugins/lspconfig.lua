@@ -26,6 +26,7 @@ return {
 				nmap("gd", vim.lsp.buf.definition, "Go to Definition")
 				nmap("K", vim.lsp.buf.hover, "Hover")
 				nmap("gr", vim.lsp.buf.references, "References")
+				nmap("gi", vim.lsp.buf.implementation, "Go to implementation")
 				nmap("<leader>rn", vim.lsp.buf.rename, "Rename")
 				nmap("<leader>ca", vim.lsp.buf.code_action, "Code Action")
 
