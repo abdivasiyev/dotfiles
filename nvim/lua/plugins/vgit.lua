@@ -23,6 +23,9 @@ return {
 					['n <leader>gu'] = function() require('vgit').buffer_reset() end,
 					['n <leader>gd'] = function() require('vgit').project_diff_preview() end,
 					['n <leader>gx'] = function() require('vgit').toggle_diff_preference() end,
+					['n <leader>gac'] = function() require('vgit').buffer_conflict_accept_current() end,
+					['n <leader>gai'] = function() require('vgit').buffer_conflict_accept_incoming() end,
+					['n <leader>gab'] = function() require('vgit').buffer_conflict_accept_both() end,
 				},
 				settings = {
 					-- You can either allow corresponding mapping for existing hl, or re-define them yourself entirely.
