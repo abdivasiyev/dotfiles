@@ -220,6 +220,7 @@
 (use-package emacs
   :hook (rust-mode . eglot-ensure)
   :hook (go-mode . eglot-ensure)
+  :hook (haskell-mode . eglot-ensure)
   :general
   (leader-keys
     "l" '(:ignore t :which-key "lsp")
@@ -258,8 +259,52 @@
     "m t" '(go-test-current-project :which-key "test")
     "m r" '(go-run :which-key "run")))
 (use-package yaml-mode)
+(use-package haskell-mode)
+
+;; lsp configurations
+(setq eglot-workspace-configuration
+      '((:gopls .
+                ((staticcheck . t)
+                 (matcher . "CaseSensitive")
+                 (usePlaceholders . t)
+                 (vulncheck . "Imports")
+                 (hints .
+                        ((assignVariableTypes . t)
+                         (compositeLiteralFields . t)
+                         (compositeLiteralTypes . t)
+                         (constantValues . t)
+                         (functionTypeParameters . t)
+                         (ignoredError . t)
+                         (parameterNames . t)
+                         (rangeVariableTypes . t)))))
+        (:haskell .
+                  ((plugin .
+                           ((fourmolu .
+                                     ((config .
+                                             ((external . t)))))))))))
 
 (use-package rg
   :general
   (leader-keys
     "f" '(rg-menu :which-key "find")))
+
+(use-package dirvish
+  :init
+  (dirvish-override-dired-mode)
+  :config
+  (setq dirvish-mode-line-format
+        '(:left (sort symlink) :right (omit yank index)))
+  (setq dirvish-mode-line-height 10)
+  (setq dirvish-attributes
+        '(nerd-icons file-time file-size collapse subtree-state vc-state git-msg))
+  (setq dirvish-subtree-state-style 'nerd)
+  (setq delete-by-moving-to-trash t)
+  (setq dirvish-path-separators (list
+                                 (format "  %s " (nerd-icons-codicon "nf-cod-home"))
+                                 (format "  %s " (nerd-icons-codicon "nf-cod-root_folder"))
+                                 (format " %s " (nerd-icons-faicon "nf-fa-angle_right"))))
+  (setq dired-listing-switches
+        "-l --almost-all --human-readable --group-directories-first --no-group")
+  (dirvish-peek-mode) ; Preview files in minibuffer
+  (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
+)
