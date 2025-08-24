@@ -57,11 +57,6 @@
 		(setq mac-option-modifier 'meta)
 		(setq mac-control-modifier 'control)))
 
-(use-package emacs
-  :init
-  (global-set-key (kbd "<C-tab>") 'next-buffer)
-  (global-set-key (kbd "<C-backtab>") 'previous-buffer))
-
 (use-package evil
   :demand ; No lazy loading
   :config
@@ -143,10 +138,6 @@
   :config
   (ivy-mode))
 
-(use-package pinentry
-  :ensure t
-  :init (pinentry-start))
-
 (use-package magit
   :general
   (leader-keys
@@ -164,7 +155,7 @@
   (evil-collection-init))
 
 (use-package diff-hl
-  :after magit
+  :demand t
   :init
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
@@ -291,6 +282,8 @@
   :hook ((before-save . eglot-format-buffer))
   :hook ((before-save . organize-imports)))
 
+(use-package json-mode)
+
 (use-package rg
   :general
   (leader-keys
@@ -335,3 +328,7 @@
                          (list "community" 'telega-database-dir
                                (expand-file-name "community" telega-database-dir))))
   :defer t)
+
+(use-package smartparens
+  :ensure smartparens
+  :hook (prog-mode text-mode rust-mode go-mode yaml-mode))
