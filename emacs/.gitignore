@@ -3,3 +3,7 @@ straight/
 transient/
 url/
 *.eld
+.lsp-session-v1
+eln-cache/
+projects
+public

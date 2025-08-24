@@ -57,6 +57,11 @@
 		(setq mac-option-modifier 'meta)
 		(setq mac-control-modifier 'control)))
 
+(use-package emacs
+  :init
+  (global-set-key (kbd "<C-tab>") 'next-buffer)
+  (global-set-key (kbd "<C-backtab>") 'previous-buffer))
+
 (use-package evil
   :demand ; No lazy loading
   :config
@@ -88,11 +93,6 @@
 
 (use-package nerd-icons)
 
-(use-package projectile
-  :demand
-  :init
-  (projectile-mode +1))
-
 (use-package which-key
   :demand
   :init
@@ -123,28 +123,29 @@
     "bd"  'kill-current-buffer
   ))
 
+(use-package eg
+  :ensure t)
+
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode +1))
+
 (use-package projectile
   :demand
-  :general
-  (leader-keys
-    :states 'normal
-    "SPC" '(projectile-find-file :which-key "find file")
-
-    ;; Buffers
-    "b b" '(projectile-switch-to-buffer :which-key "switch buffer")
-
-    ;; Projects
-    "p" '(:ignore t :which-key "projects")
-    "p <escape>" '(keyboard-escape-quit :which-key t)
-    "p p" '(projectile-switch-project :which-key "switch project")
-    "p a" '(projectile-add-known-project :which-key "add project")
-    "p r" '(projectile-remove-known-project :which-key "remove project"))
   :init
+  (setq projectile-project-search-path '("~/Development/"))
+  :config
+  (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map)
   (projectile-mode +1))
 
 (use-package ivy
   :config
   (ivy-mode))
+
+(use-package pinentry
+  :ensure t
+  :init (pinentry-start))
 
 (use-package magit
   :general
@@ -163,6 +164,7 @@
   (evil-collection-init))
 
 (use-package diff-hl
+  :after magit
   :init
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
@@ -221,48 +223,9 @@
   :hook (rust-mode . eglot-ensure)
   :hook (go-mode . eglot-ensure)
   :hook (haskell-mode . eglot-ensure)
-  :general
-  (leader-keys
-    "l" '(:ignore t :which-key "lsp")
-    "l <escape>" '(keyboard-escape-quit :which-key t)
-    "l r" '(eglot-rename :which-key "rename")
-    "l i" '(eglot-find-implementation :which-key "find implementation")
-    "l f" '(eglot-code-action-organize-imports :which-key "organize imports")
-    "l a" '(eglot-code-actions :which-key "code actions")))
-
-(use-package treesit-auto
-  :custom
-  (treesit-auto-install 'prompt)
   :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
-
-(use-package markdown-mode
-  :config
-  (setq markdown-fontify-code-blocks-natively t))
-(use-package rust-mode
-  :general
-  (leader-keys
-    "m" '(:ignore t :which-key "mode")
-    "m <escape>" '(keyboard-escape-quit :which-key t)
-    "m b" '(rust-compile :which-key "build")
-    "m r" '(rust-run :which-key "run")
-    "m t" '(rust-test :which-key "test")
-    "m k" '(rust-check :which-key "check")
-    "m c" '(rust-run-clippy :which-key "clippy")))
-(use-package go-mode)
-(use-package gotest
-  :general
-  (leader-keys
-    "m" '(:ignore t :which-key "mode")
-    "m <escape>" '(keyboard-escape-quit :which-key t)
-    "m t" '(go-test-current-project :which-key "test")
-    "m r" '(go-run :which-key "run")))
-(use-package yaml-mode)
-(use-package haskell-mode)
-
-;; lsp configurations
-(setq eglot-workspace-configuration
+    ;; lsp configurations
+  (setq eglot-workspace-configuration
       '((:gopls .
                 ((staticcheck . t)
                  (matcher . "CaseSensitive")
@@ -276,12 +239,57 @@
                          (functionTypeParameters . t)
                          (ignoredError . t)
                          (parameterNames . t)
-                         (rangeVariableTypes . t)))))
-        (:haskell .
-                  ((plugin .
-                           ((fourmolu .
-                                     ((config .
-                                             ((external . t)))))))))))
+                         (rangeVariableTypes . t)))))))
+
+  :general
+  (leader-keys
+    "l" '(:ignore t :which-key "lsp")
+    "l <escape>" '(keyboard-escape-quit :which-key t)
+    "l r" '(eglot-rename :which-key "rename")
+    "l i" '(eglot-find-implementation :which-key "find implementation")
+    "l a" '(eglot-code-actions :which-key "code actions")))
+
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
+(use-package markdown-mode
+  :config
+  (setq markdown-fontify-code-blocks-natively t))
+(use-package rust-mode
+  :hook ((before-save . eglot-format-buffer))
+  :hook ((before-save . organize-imports))
+  :general
+  (leader-keys
+    "m" '(:ignore t :which-key "mode")
+    "m <escape>" '(keyboard-escape-quit :which-key t)
+    "m b" '(rust-compile :which-key "build")
+    "m r" '(rust-run :which-key "run")
+    "m t" '(rust-test :which-key "test")
+    "m k" '(rust-check :which-key "check")
+    "m c" '(rust-run-clippy :which-key "clippy")))
+
+(defun organize-imports ()
+  (call-interactively 'eglot-code-action-organize-imports))
+
+(use-package go-mode
+  :hook ((before-save . eglot-format-buffer))
+  :hook ((before-save . organize-imports)))
+
+(use-package gotest
+  :general
+  (leader-keys
+    "m" '(:ignore t :which-key "mode")
+    "m <escape>" '(keyboard-escape-quit :which-key t)
+    "m t" '(go-test-current-project :which-key "test")
+    "m r" '(go-run :which-key "run")))
+(use-package yaml-mode)
+(use-package haskell-mode
+  :hook ((before-save . eglot-format-buffer))
+  :hook ((before-save . organize-imports)))
 
 (use-package rg
   :general
@@ -308,3 +316,22 @@
   (dirvish-peek-mode) ; Preview files in minibuffer
   (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
 )
+
+(use-package telega
+  :init
+  (add-hook 'telega-load-hook 'telega-notifications-mode)
+  (add-hook 'telega-load-hook 'telega-mode-line-mode)
+  (add-hook 'telega-load-hook 'telega-autoplay-mode)
+  (define-key global-map (kbd "C-c t") telega-prefix-map)
+  :load-path  "~/telega.el"
+  :commands (telega)
+  :config
+  ;; telega configurations
+  (setq telega-server-libs-prefix "/opt/homebrew")
+  (setq telega-accounts (list
+                         (list "work" 'telega-database-dir telega-database-dir)
+                         (list "personal" 'telega-database-dir
+                               (expand-file-name "personal" telega-database-dir))
+                         (list "community" 'telega-database-dir
+                               (expand-file-name "community" telega-database-dir))))
+  :defer t)
