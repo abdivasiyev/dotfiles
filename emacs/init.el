@@ -48,7 +48,8 @@
 (use-package emacs
   :init
   (setq-default indent-tabs-mode nil)
-  (setq-default tab-width 2))
+  (setq-default tab-width 2)
+  (global-auto-revert-mode 1))
 
 (use-package emacs
   :init
@@ -214,6 +215,8 @@
   :hook (rust-mode . eglot-ensure)
   :hook (go-mode . eglot-ensure)
   :hook (haskell-mode . eglot-ensure)
+  :hook (dockerfile-mode . eglot-ensure)
+  :hook (docker-compose-mode . eglot-ensure)
   :config
     ;; lsp configurations
   (setq eglot-workspace-configuration
@@ -276,6 +279,8 @@
     "m" '(:ignore t :which-key "mode")
     "m <escape>" '(keyboard-escape-quit :which-key t)
     "m t" '(go-test-current-project :which-key "test")
+    "m c" '(go-test-current-coverage :which-key "coverage")
+    "m b" '(go-test-current-benchmark :which-key "benchmark")
     "m r" '(go-run :which-key "run")))
 (use-package yaml-mode)
 (use-package haskell-mode
@@ -283,6 +288,8 @@
   :hook ((before-save . organize-imports)))
 
 (use-package json-mode)
+(use-package dockerfile-mode)
+(use-package docker-compose-mode)
 
 (use-package rg
   :general
@@ -332,3 +339,10 @@
 (use-package smartparens
   :ensure smartparens
   :hook (prog-mode text-mode rust-mode go-mode yaml-mode))
+
+(use-package dashboard
+  :ensure t
+  :init
+  (setq initial-buffer-choice 'dashboard-open)
+  :config
+  (dashboard-setup-startup-hook))
