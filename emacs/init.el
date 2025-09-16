@@ -69,10 +69,11 @@
     :font "JetBrains Mono"
     :height 160))
 
-(use-package doom-themes
+;; Gruvbox theme
+(use-package gruvbox-theme
   :demand
   :config
-  (load-theme 'doom-gruvbox t))
+  (load-theme 'gruvbox-dark-medium t))
 
 (use-package emacs
   :init
