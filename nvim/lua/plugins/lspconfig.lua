@@ -1,5 +1,8 @@
 return {
 	{
+		"github/copilot.vim"
+	},
+	{
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
